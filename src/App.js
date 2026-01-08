@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import CategoryFilter from './components/CategoryFilter';
+import ProductList from './components/ProductList';
+import productsData from './data/products.json'
 
 function App() {
+
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const categories = ['All', ...new Set(productsData.map((product) => product.category))];
+
+  const filteredProducts =
+    selectedCategory === "All"
+      ? productsData
+      : productsData.filter(
+        (product) => product.category === selectedCategory
+      );
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    
+      <div className="min-h-screen bg-gray-300 px-10 py-8">
+        <h1 className='text-3xl font-bold text-center mb-6'>Product Store</h1>
+
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
+
+        <ProductList products={filteredProducts} />
+
+      </div>
+
+    
   );
 }
 
